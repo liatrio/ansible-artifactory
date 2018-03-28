@@ -9,6 +9,9 @@
       become: yes
     - role: geerlingguy.mysql
       become: yes
+      mysql_packages:
+         - mysql57
+         - mysql57-server
     - role: java_internal
       become: yes
     - role: geerlingguy.nginx
@@ -30,4 +33,5 @@
             }
     - role: bbaassssiiee.artifactory
       become: true
+
 
