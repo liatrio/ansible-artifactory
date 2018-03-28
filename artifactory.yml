@@ -9,6 +9,7 @@
       become: yes
     - role: geerlingguy.mysql
       become: yes
+      ansible_distribution_major_version: 6
       mysql_packages:
          - mysql57
          - mysql57-server
