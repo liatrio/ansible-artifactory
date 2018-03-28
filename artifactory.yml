@@ -7,6 +7,12 @@
       become: yes
     - role: python_mysql_modules
       become: yes
+    - role: geerlingguy.mysql
+      become: yes
+      ansible_distribution_major_version: 6
+      mysql_packages:
+         - mysql57
+         - mysql57-server
     - role: java_internal
       become: yes
     - role: geerlingguy.nginx
@@ -28,4 +34,5 @@
             }
     - role: bbaassssiiee.artifactory
       become: yes
+
 
