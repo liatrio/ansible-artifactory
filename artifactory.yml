@@ -2,6 +2,7 @@
 - hosts: artifactory
   vars:
     artifactory_database: 'mysql'
+    artifactory_data_filestore_path: "/data/artifactory/filestore"
   roles:
     - role: liatrio.mount_persist_data
       become: yes
