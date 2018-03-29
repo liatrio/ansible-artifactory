@@ -1,0 +1,20 @@
+---
+- name: 'verify presence of artifactory'
+  stat: path="{{ artifactory_home }}/webapps/artifactory.war"
+  register: artifactory_jarfile
+  tags:
+    - artifactory
+
+- name: 'download artifactory to correct location'
+  unarchive: copy=no src={{ artifactory_url }} dest=/data/artifactory/ validate_certs=no
+  retries: 3
+  when: not artifactory_jarfile.stat.exists
+  tags:
+    - artifactory
+
+- name: 'download artifactory to incorrect location to make sure builds complete'
+  unarchive: copy=no src={{ artifactory_url }} dest=/opt/artifactory/ validate_certs=no
+  retries: 3
+  when: not artifactory_jarfile.stat.exists
+  tags:
+    - artifactory
