@@ -1,0 +1,5 @@
+---
+  - name: Install python mysql package
+    yum:
+      name: MySQL-python27.x86_64
+      state: latest

@@ -1,0 +1,40 @@
+---
+- hosts: artifactory
+  vars:
+    artifactory_database: 'mysql'
+    artifactory_data_filestore_path: "/data/artifactory/filestore"
+  roles:
+    - role: liatrio.mount_persist_data
+      become: yes
+    - role: python_mysql_modules
+      become: yes
+    - role: geerlingguy.mysql
+      become: yes
+      ansible_distribution_major_version: 6
+      mysql_packages:
+         - mysql57
+         - mysql57-server
+      mysql_datadir: /data/mysql
+    - role: java_internal
+      become: yes
+    - role: geerlingguy.nginx
+      become: yes
+      ansible_distribution_major_version: 6
+      nginx_vhosts:
+        - listen: "80"
+          server_name: "artifactory.fastfeedback.rocks"
+          state: "present"
+          template: "{{ nginx_vhost_template }}"
+          filename: "artifactory.fastfeedback.rocks"
+          extra_parameters: |
+            location / {
+                proxy_set_header Host $host:$server_port;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                proxy_pass http://127.0.0.1:8081;
+            }
+    - role: bbaassssiiee.artifactory
+      become: yes
+
+
